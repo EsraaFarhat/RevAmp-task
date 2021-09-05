@@ -1,3 +1,5 @@
+const { Ticket } = require("./ticket");
+
 const Joi = require("joi");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
@@ -47,7 +49,11 @@ userSchema.methods.generateAuthToken = function () {
     return token;
 };
 
-const User = mongoose.model("User", userSchema);
+
+userSchema.pre('remove', async function(next){
+    await Ticket.deleteMany({customer: this._id}).exec();
+    next();
+});
 
 function validateUser(user) {
     const schema = Joi.object({
@@ -59,6 +65,8 @@ function validateUser(user) {
     });
     return schema.validate(user);
 }
+
+const User = mongoose.model("User", userSchema);
 
 module.exports.User = User;
 module.exports.validate = validateUser;

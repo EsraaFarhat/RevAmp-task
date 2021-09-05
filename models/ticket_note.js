@@ -14,11 +14,11 @@ const TicketNoteSchema = mongoose.Schema({
         trim: true,
     },
     ticketId: {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Ticket'
     },
     userId: {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }
 });

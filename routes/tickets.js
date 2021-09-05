@@ -1,4 +1,7 @@
 const auth = require("../middleware/auth");
+const isAdmin = require("../middleware/isAdmin");
+const hasPrivilege = require("../middleware/hasPrivilege");
+
 const { Ticket, validate } = require("../models/ticket");
 const { TicketNote, validateAddNote } = require("../models/ticket_note");
 const { User } = require("../models/user");
@@ -8,7 +11,7 @@ const express = require("express");
 const router = express.Router();
 
 
-router.get("/", async (req, res, next) => {
+router.get("/", [ auth, hasPrivilege ], async (req, res, next) => {
     const tickets = await Ticket.find().populate("customer").sort("-updatedAt");
     res.send({tickets});
 });
@@ -36,22 +39,25 @@ router.post("/", auth, async (req, res, next) => {
     res.send({ticket});
 });
 
-router.post("/:id/addNote", auth, async (req, res, next) => {
+router.post("/:ticketId/addNote", [auth, hasPrivilege], async (req, res, next) => {
     const { error } = validateAddNote(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
     const user = await User.findById(req.user._id).select("_id");
 
+    const ticket = await Ticket.findById(req.params.ticketId);
+    if (!ticket) return res.status(404).send({ message: "Ticket not found." });
+
     const note = new TicketNote({
         content: req.body.content,
-        ticketId: req.params.id,
+        ticketId: req.params.ticketId,
         userId: user,
     });
     await note.save();
     res.send({note});
 });
 
-router.patch("/:id", [auth], async (req, res, next) => {
+router.patch("/:id", [auth, hasPrivilege], async (req, res, next) => {
     let id = req.params.id;
 
     const { error } = patchValidate(req.body);
