@@ -35,4 +35,4 @@ function validateTicketNote(note) {
 
 
 module.exports.TicketNote = TicketNote;
-module.exports.validate = validateTicketNote;
+module.exports.validateAddNote = validateTicketNote;

@@ -31,7 +31,7 @@ const Ticket = mongoose.model("Ticket", ticketSchema);
 function validateTicket(ticket) {
     const schema = Joi.object({
         title: Joi.string().min(3).max(100).required(),
-        status: Joi.string.default("pending"),
+        status: Joi.string().default("pending"),
     });
     return schema.validate(ticket);
 }
