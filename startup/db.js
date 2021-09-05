@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
+const winston = require("winston");
 
-require('dotenv').config()
+require('dotenv').config();
 
 module.exports = function () {
   mongoose
@@ -8,5 +9,5 @@ module.exports = function () {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })
-    .then(() => console.log("connected to MongoDB..."));
+    .then(() => winston.info("connected to MongoDB..."));
 };
