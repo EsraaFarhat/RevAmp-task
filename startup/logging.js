@@ -1,17 +1,40 @@
 const winston = require("winston");
+require("express-async-errors");
 
 module.exports = function () {
-  //* Handel uncaught exceptions
-  winston.exceptions.handle(
-    new winston.transports.Console({ colorize: true, prettyPrint: true }),
-    new winston.transports.File({ filename: "logFile.log" })
-  );
+    const logger = winston.createLogger({
+        transports: [ 
+            new winston.transports.Console({
+                colorize: true,
+                prettyPrint: true
+            }),
+            new winston.transports.File({
+                filename: 'logFile.log'
+            })
+        ],
+        //* Handel uncaught exceptions
+        exceptionHandlers: [
+            new winston.transports.Console({
+                colorize: true,
+                prettyPrint: true
+            }),
+            new winston.transports.File({
+                filename: 'logFile.log'
+            })
+        ],
+         // * Handel unhandled rejections
+        rejectionHandlers: [
+            new winston.transports.Console({
+                colorize: true,
+                prettyPrint: true
+            }),
+            new winston.transports.File({
+                filename: 'logFile.log'
+            })
+        ]
 
-  // * Handel unhandled rejections
-  process.on("unhandledRejection", (ex) => {
-    throw ex;
-  });
+    });
 
-  winston.add(new winston.transports.Console({ colorize: true, prettyPrint: true }));
-  winston.add(new winston.transports.File({ filename: "logFile.log" }));
+
+    winston.add(logger);
 };
