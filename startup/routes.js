@@ -4,6 +4,7 @@ const cors = require("cors");
 const auth = require("../routes/auth");
 const users = require("../routes/users");
 const tickets = require("../routes/tickets");
+const admin = require("../routes/admin");
 const error = require("../middleware/error");
 
 module.exports = function (app) {
@@ -13,6 +14,7 @@ module.exports = function (app) {
   app.use("/api/auth", auth);
   app.use("/api/users", users);
   app.use("/api/tickets", tickets);
+  app.use("/admin", admin);
 
   app.use(error);
 };
