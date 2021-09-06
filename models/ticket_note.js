@@ -13,11 +13,11 @@ const TicketNoteSchema = mongoose.Schema({
         maxlength: 255,
         trim: true,
     },
-    ticketId: {
+    ticket: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Ticket'
     },
-    userId: {
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }

@@ -25,7 +25,7 @@ const userSchema = mongoose.Schema({
         minlength: 5,
         maxlength: 255,
     },
-    password: {
+    encryptedPassword: {
         type: String,
         required: true,
         minlength: 5,
@@ -60,7 +60,7 @@ function validateUser(user) {
         fname: Joi.string().min(3).max(50).required(),
         lname: Joi.string().min(3).max(50).required(),
         email: Joi.string().min(5).max(255).required().email(),
-        password: Joi.string().min(5).max(255).required(),
+        encryptedPassword: Joi.string().min(5).max(255).required(),
         role: Joi.string().default("customer")
     });
     return schema.validate(user);
