@@ -9,9 +9,6 @@ require("./startup/logging")();
 require("./startup/db")();
 require("./startup/routes")(app);
 
-if (!process.env.jwtPrivateKey) {
-  throw new Error("FATAL ERROR: jwtPrivateKey is not defined.");
-}
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
