@@ -35,7 +35,7 @@ const canModifyData = ({ currentAdmin }) => {
   );
 };
 
-// const canListHisTickets = ({ currentAdmin, record }) => {
+// const canModifyHisData = ({ currentAdmin, record }) => {
 //     return (
 //       currentAdmin &&
 //       currentAdmin._id === record.param("customer"))
@@ -79,7 +79,7 @@ const adminBro = new AdminBro({
           },
           edit: { isAccessible: canModifyUsers },
           delete: { isAccessible: canModifyUsers },
-          list: { isAccessible: canAddUser },
+          list: { isAccessible: canModifyUsers },
         },
       },
     },
@@ -92,7 +92,7 @@ const adminBro = new AdminBro({
         // },
         actions: {
           new: { isAccessible: canAddTicket },
-          list: { isAccessible: canModifyData },
+          list: { isAccessible: [canModifyData || canAddTicket]},
           edit: { isAccessible: canModifyData },
           delete: { isAccessible: false },
         },
@@ -102,8 +102,8 @@ const adminBro = new AdminBro({
       resource: TicketNote,
       options: {
         actions: {
-            new: { isAccessible: canModifyData },
-            list: { isAccessible: canModifyData },
+            new: { isAccessible: [canModifyData || canAddTicket ] },
+            list: { isAccessible: [canModifyData || canAddTicket ] },
             edit: { isAccessible: false },
             delete: { isAccessible: false },
           },
